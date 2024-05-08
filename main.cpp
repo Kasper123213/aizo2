@@ -1,6 +1,42 @@
 #include <iostream>
+#include <windows.h>
+#include "tests/ManualTests.h"
+#include "tests/AutoTests.h"
 
+using namespace std;
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    SetConsoleOutputCP(CP_UTF8);    //ustawianie polskich znaków
+
+
+    srand(time(NULL)); //inicjacja generatora liczb pseudolosowych
+
+    cout << "Autor: Kasper Radom 264023" << endl << endl;
+
+
+    char choice = 'n';
+    do{
+        cout<<"Który problem chcesz rozwiązać:"<<endl
+            <<"a) Testy automatyczne"<<endl
+            <<"b) Testy manualne"<<endl
+            <<"q) Wyjście"<<endl<<">>";
+        cin>>choice;
+        cout<<endl<<endl;
+
+        switch (choice) {
+            case 'a': {
+                AutoTests *autoTests;
+
+                delete autoTests;
+                break;
+            }
+            case 'b': {
+                ManualTests *manualTests;
+
+                delete manualTests;
+                break;
+            }
+        }
+    }while(choice!='q');
+
     return 0;
 }
