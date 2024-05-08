@@ -7,11 +7,13 @@
 using namespace std;
 
 ManualTests::ManualTests(){
+    graph = new Graph();
+
     problem = choseProblem();
 
     representation = choseRepresentation();
 
-    char choice = 'n';
+    char choice = 'a';
     do{
         cout<<"Co chcesz zrobić:"<<endl
             << "a) Wczytaj dane z pliku."<<endl
@@ -33,7 +35,7 @@ ManualTests::ManualTests(){
             }
 
             cout<<"q) Wyjście"<<endl<<">>";
-        cin>>choice;
+//        cin>>choice;
         cout<<endl<<endl;
 
         switch (choice) {
@@ -61,13 +63,13 @@ ManualTests::ManualTests(){
 
 //Wybór problemu
 ManualTests::Problem ManualTests::choseProblem() {
-    char choice = 'n';
+    char choice = 'a';
     do{
         cout<<"Wybierz problem:"<<endl
             << "a) Wyznaczanie minimalnego drzewa rozpinającego (MST)"<<endl
             << "b) Wyznaczanie najkrótszej ścieżki w grafie"<<endl
             <<endl<<">>";
-        cin>>choice;
+//        cin>>choice;
         cout<<endl<<endl;
 
         if (choice == 'a') return Problem::MST;
@@ -77,13 +79,13 @@ ManualTests::Problem ManualTests::choseProblem() {
 
 //Wybór reprezentacji
 ManualTests::Representation ManualTests::choseRepresentation() {
-    char choice = 'n';
+    char choice = 'a';
     do{
         cout<<"Wybierz problem:"<<endl
             << "a) Reprezentacja macierzowa (macierz incydencji),"<<endl
             << "b) Reprezentacja listowa (lista następników/poprzedników)"<<endl
             <<endl<<">>";
-        cin>>choice;
+//        cin>>choice;
         cout<<endl<<endl;
 
         if (choice == 'a') return Representation::MATRIX;
@@ -98,12 +100,12 @@ void ManualTests::readFromFile() {
     string path;
     cout<<"Podaj ścieżkę"<<endl<<">>";
 //    cin>>path; //todo odkomentowac
-    path = "C:\\Users\\radom\\OneDrive\\Pulpit\\aizo\\aizo2\\opisGrafNieskierowany.txt";
+    path = "C:\\Users\\radom\\OneDrive\\Pulpit\\aizo\\aizo2\\files\\opisGrafNieskierowany.txt";
 
     if (problem == ManualTests::Problem::MST){
-        graph->readUndirectedGraph(path);
+        graph->readGraph(path, 'D');
     }else{
-        graph->readDirectedGraph(path);
+        graph->readGraph(path, 'U');
     }
 }
 

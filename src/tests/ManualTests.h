@@ -20,14 +20,14 @@ namespace std {
         };
 
 
-        static Problem problem;
+        Problem problem;
         Representation representation;
 
-        static Graph* graph;
+        Graph* graph;
 
-        static Problem choseProblem(); //a MST, b najkrutsza ścieżka
-        static Representation choseRepresentation(); //a macierz, b lista
-        static void readFromFile();
+        Problem choseProblem(); //a MST, b najkrutsza ścieżka
+        Representation choseRepresentation(); //a macierz, b lista
+        void readFromFile();
 
 
     public:

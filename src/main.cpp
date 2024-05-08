@@ -13,24 +13,24 @@ int main() {
     cout << "Autor: Kasper Radom 264023" << endl << endl;
 
 
-    char choice = 'n';
+    char choice = 'b';
     do{
         cout<<"Który problem chcesz rozwiązać:"<<endl
             <<"a) Testy automatyczne"<<endl
             <<"b) Testy manualne"<<endl
             <<"q) Wyjście"<<endl<<">>";
-        cin>>choice;
+//        cin>>choice;
         cout<<endl<<endl;
 
         switch (choice) {
             case 'a': {
-                AutoTests *autoTests;
+                AutoTests *autoTests = new AutoTests();
 
                 delete autoTests;
                 break;
             }
             case 'b': {
-                ManualTests *manualTests;
+                ManualTests *manualTests = new ManualTests();
 
                 delete manualTests;
                 break;
