@@ -11,7 +11,7 @@
 using namespace std;
 class Graph {
 private:
-    Table **matrix; //wierzchołek -> wagi kolejnych krawędzi
+    Table **matrix; //wierzchołek -> wagi kolejnych krawędzi //waga ujemna jesli krawedz idzie do, dodatnia jesli wychodzi
     Table ***list;//wierzchołek -> następnicy -> wagi następników
 
     int vertices;
@@ -27,6 +27,8 @@ public:
     Graph();
     ~Graph();
     void readGraph(const string& path, char type);
+    void printMatrix();
+    void printList();
 };
 
 

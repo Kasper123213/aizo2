@@ -104,6 +104,8 @@ void ManualTests::readFromFile() {
 
     if (problem == ManualTests::Problem::MST){
         graph->readGraph(path, 'D');
+        graph->printMatrix();
+        graph->printList();
     }else{
         graph->readGraph(path, 'U');
     }

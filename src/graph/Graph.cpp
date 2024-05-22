@@ -12,7 +12,6 @@ Graph::Graph(){
 
 Graph::~Graph() {
     clearRepresentations();
-//    clearList(); //todo clearList
 }
 
 
@@ -36,6 +35,8 @@ void Graph::readGraph(const string& path, char type) {
     file >> vertices;
 
     makeMatrix();
+    makeList();
+
     int out, in, weight;
 
     try {
@@ -56,19 +57,26 @@ void Graph::readGraph(const string& path, char type) {
 
 
 void Graph::addEdge(int out, int in, int weight, int edgeID, char type) {
-//    dodawanie do macierzy //todo uwzględnić krawędzie do samego siebie
+//    uzupelnianie do macierzy
     matrix[out]->setValue(edgeID, weight);
 
-    if(matrix[in]->get(edgeID)==0) {//uwzględnienie krawędzi idących do tego samego wierzchołka z ktorego wychodzą
-        if(type == 'D') {
+    if(in != out) {//uwzględnienie krawędzi idących do tego samego wierzchołka z ktorego wychodzą
+        //jesli krawędź jest pętlą to jest jedyna w kolumnie
+        if(type == 'D') {//D- directed
             matrix[in]->setValue(edgeID, -weight);
         }else{
             matrix[in]->setValue(edgeID, weight);
         }
-    }else{
-        matrix[in]->setValue(edgeID, 2*weight);
     }
 
+// uzupelnianie listy
+    list[out][0]->push(in);
+    list[out][1]->push(weight);
+
+    if(type == 'U' and out != in){
+        list[in][0]->push(out);
+        list[in][1]->push(weight);
+    }
 }
 
 void Graph::clearRepresentations() {
@@ -92,7 +100,7 @@ void Graph::clearMatrix() {
 
 void Graph::makeMatrix() {
     matrix = new Table*[vertices];
-    for(int vertex = 0; vertex <= vertices; vertex++){
+    for(int vertex = 0; vertex < vertices; vertex++){
         matrix[vertex] = new Table();
         matrix[vertex]->setSize(edges);
         matrix[vertex]->fillZeros();
@@ -101,23 +109,61 @@ void Graph::makeMatrix() {
 
 
 void Graph::clearList() {
-    if(edges == 0) return;
-    for(int edge = 0; edge < edges; edge++){
-        for(int i=0; i<3; i++){
-            delete list[edge][i];
+    if(vertices == 0) return;
+    for(int vertex = 0; vertex < vertices; vertex++){
+        for(int i=0; i<2; i++){
+            delete list[vertex][i];
         }
-        delete[] list[edge];
+        delete[] list[vertex];
     }
     delete[] list;
 }
 
 
 void Graph::makeList() {
-    list = new Table**[edges];
-    for(int edge = 0; edge <= edges; edge++){
-        list[edge] = new Table*[3];
-        for(int i=0; i<3; i++){
-            list[edge][i] = new Table();
+    list = new Table**[vertices];
+    for(int vertex = 0; vertex < vertices; vertex++){
+        list[vertex] = new Table*[2];
+        for(int i=0; i<2; i++){
+            list[vertex][i] = new Table();
+        }
+    }
+}
+
+void Graph::printMatrix() {
+    if(vertices == 0){
+        cout<<"Macierz pusta"<<endl;
+    }else{
+        cout<<"Macierz incydencji:"<<endl;
+        for(int row = 0; row<vertices; row++){
+            cout<<row<<" -> ";
+            for(int col = 0; col<edges; col++){
+                cout<<matrix[row]->get(col)<<"\t| ";
+            }
+            cout<<endl;
+        }
+    }
+}
+
+void Graph::printList() {
+    if(vertices == 0){
+        cout<<"Lista pusta"<<endl;
+    }else{
+        cout<<"Lista następników:"<<endl;
+        for(int row = 0; row<vertices; row++){
+            cout<<row;
+            for(int tab = 0; tab<2; tab++){
+                   cout<<" -> {";
+                   int size = list[row][tab]->getSize();
+                   for(int i = 0; i<size-1; i++){
+                       cout<<list[row][tab]->get(i)<<", ";
+                   }
+                   if(size>0) {
+                       cout << list[row][tab]->get(list[row][tab]->getSize() - 1);
+                   }
+                   cout<<"}";
+            }
+            cout<<endl;
         }
     }
 }

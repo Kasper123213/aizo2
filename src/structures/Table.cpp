@@ -59,6 +59,7 @@ int Table::get(int index) {
 //zmiana rozmiaru
 void Table::setSize(int newSize) {
     deleteTable();
+    size = newSize;
     head = new int[newSize];
 }
 
