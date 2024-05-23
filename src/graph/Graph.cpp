@@ -136,7 +136,7 @@ void Graph::printMatrix() {
     }else{
         cout<<"Macierz incydencji:"<<endl;
         for(int row = 0; row<vertices; row++){
-            cout<<row<<" -> ";
+            cout<<row<<" ->\t";
             for(int col = 0; col<edges; col++){
                 cout<<matrix[row]->get(col)<<"\t| ";
             }
@@ -166,4 +166,57 @@ void Graph::printList() {
             cout<<endl;
         }
     }
+}
+
+void Graph::randomGraph(int vertices, int density, char type) {
+    clearRepresentations();
+
+    this->vertices = vertices;
+    this->edges = int(density/100.0 * vertices * (vertices-1) / 2);
+
+    makeMatrix();
+    makeList();
+    //tworzenie drzewa spinającego
+    Table* visited = new Table();
+    Table* unvisited = new Table();
+
+    for(int v=1; v<vertices; v++){
+        unvisited->push(v);
+    }
+    visited->push(0);
+
+    int from, to, weight, vertex, edgeId = 0;
+    while (unvisited->getSize()!=0) {
+        from = rand() % (visited->getSize());
+        to = rand() % (unvisited->getSize());
+
+        if(from == to)continue;
+
+        weight = rand() % (99)+1;//todo zmienic maxa
+
+        vertex = unvisited->get(to);
+        addEdge(visited->get(from), vertex, weight, edgeId, type);
+        edgeId++;
+
+        visited->push(vertex);
+        unvisited->remove(to);
+    }
+
+
+    //dodawanie reszty krawędzi
+    while(edgeId<edges){
+        from = rand() % (visited->getSize());
+        to = rand() % (visited->getSize());
+
+        vertex = visited->get(to);
+        if(from == to or list[from][0]->find(vertex) != -1)continue;
+
+        weight = rand() % (99)+1;//todo zmienic maxa
+        addEdge(visited->get(from), vertex, weight, edgeId, type);
+        edgeId++;
+
+    }
+
+    delete visited;
+    delete unvisited;
 }

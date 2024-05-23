@@ -8,7 +8,7 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);    //ustawianie polskich znaków
 
 
-    srand(time(NULL)); //inicjacja generatora liczb pseudolosowych
+    srand(static_cast<unsigned int>(time(0)));; //inicjacja generatora liczb pseudolosowych
 
     cout << "Autor: Kasper Radom 264023" << endl << endl;
 

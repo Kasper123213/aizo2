@@ -46,6 +46,9 @@ public:
     //wypelnianie tabeli zerami
     void fillZeros();
 
+//metoda usuwajaca element o podanym indeksie z tablicy
+    void remove(int index);
+
 };
 
 

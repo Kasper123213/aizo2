@@ -73,3 +73,21 @@ void Table::fillZeros() {
         setValue(i, 0);
     }
 }
+
+//metoda usuwajaca element o podanym indeksie z tablicy
+void Table::remove(int index) {
+    if(index<0 || index>=size || size <=0){ //sprawdzanie czy podano poprawny indeks
+        return;
+    }
+    int *newHead = new int[size - 1];   //ustawianie nowego wskaznika na nowa, wiekszą tablice
+    for (int i = 0; i < index; i++) {   //wstawianie elementow starej tablicy od poczatku do podanego indeksu
+        newHead[i] = head[i];
+    }
+    for (int i = index + 1; i < size; i++) {  //wstawianie elementow starej tablicy od podanego indeksu do konca
+        newHead[i - 1] = head[i];
+    }
+    size--;                                  //dekrementacja zmiennej okreslajacaj dlugosc tablicy
+    delete[] head;                                  //zawalnianie miejsca po poprzedniej tablicy
+    head = newHead;                            //ustawianie wskaznika poczatku starej tablicy na nowa tablice
+
+}

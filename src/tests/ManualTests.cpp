@@ -3,6 +3,7 @@
 //
 
 #include "ManualTests.h"
+#include "../algorithms/Prim.h"
 
 using namespace std;
 
@@ -13,17 +14,13 @@ ManualTests::ManualTests(){
 
     representation = choseRepresentation();
 
-    char choice = 'a';
+    char choice = 'q';
     do{
         cout<<"Co chcesz zrobić:"<<endl
             << "a) Wczytaj dane z pliku."<<endl
-            << "b) Wygeneruj graf losowo."<<endl;
+            << "b) Wygeneruj graf losowo."<<endl
+            << "c) Wyświetl macierzową reprezentacje grafu."<<endl;
 
-            if (representation == ManualTests::Representation::MATRIX){
-                cout<< "c) Wyświetl graf macierzowo na ekranie."<<endl;
-            }else{
-                cout<< "c) Wyświetl graf listowo na ekranie."<<endl;
-            }
 
 
             if (problem == ManualTests::Problem::MST){
@@ -35,7 +32,7 @@ ManualTests::ManualTests(){
             }
 
             cout<<"q) Wyjście"<<endl<<">>";
-//        cin>>choice;
+        cin>>choice;
         cout<<endl<<endl;
 
         switch (choice) {
@@ -43,19 +40,74 @@ ManualTests::ManualTests(){
                 readFromFile();
                 break;
             case 'b':
-                //todo generowanie grafu
+                int vertices;
+                cout<<"Podaj liczbę wierzchołków:"<<endl<<">>";
+                cin>>vertices;
+                cout<<endl<<endl;
+
+                char answer;
+                int density;
+                cout<<"Wybierz gęstość grafu:"<<endl
+                    << "a) 25%"<<endl
+                    << "b) 50%"<<endl
+                    << "c) 99%"<<endl<<">>";
+                cin>>answer;
+                cout<<endl<<endl;
+
+                switch (answer) {
+                    case 'a':
+                        if(vertices<8){
+                            cout<<"Graf nie będzie spójny przy takiej gęstości."<<endl<<endl;
+                            return;
+                        }
+                        density = 25;
+                        break;
+                    case 'b':
+                        if(vertices<4){
+                            cout<<"Graf nie będzie spójny przy takiej gęstości."<<endl<<endl;
+                            return;
+                        }
+                        density = 50;
+                        break;
+                    case 'c':
+                        density = 99;
+                        break;
+                    default:
+                        cout<<"Błędny wybór"<<endl<<endl;
+                        return;
+                }
+                if (problem == ManualTests::Problem::MST){
+                    graph->randomGraph(vertices, density, 'U');
+//                    graph->randomGraph(vertices, density, 'D');
+                }else{
+                    graph->randomGraph(vertices, density, 'U');
+                }
+
                 break;
             case 'c':
-                    //todo wyswietlanie macierzy
-                    //todo wyswietlanie listy
+                    graph->printMatrix();
+                    graph->printList();
+                    cout<<endl<<endl;
                 break;
             case 'd':
-                    //todo Prim
+                if (problem == ManualTests::Problem::MST){
+                    Prim* prim = new Prim(graph->matrix, graph->list);
+                    if (representation == ManualTests::Representation::MATRIX) {
+                        //todo mierzenie czasu
+                        prim->startWithMatrix();
+                    }else{
+                        //todo prim->startWithList();
+                    }
+                }else{
                     //todo Dijkstra
+                }
                 break;
             case 'e':
+                if (problem == ManualTests::Problem::MST){
                     //todo Kruskal
+                }else{
                     //todo Bellman-Ford
+                }
                 break;
         }
     }while(choice!='q');
@@ -100,15 +152,17 @@ void ManualTests::readFromFile() {
     string path;
     cout<<"Podaj ścieżkę"<<endl<<">>";
 //    cin>>path; //todo odkomentowac
+    cout<<endl<<endl;
+
     path = "C:\\Users\\radom\\OneDrive\\Pulpit\\aizo\\aizo2\\files\\opisGrafNieskierowany.txt";
 
     if (problem == ManualTests::Problem::MST){
         graph->readGraph(path, 'D');
-        graph->printMatrix();
-        graph->printList();
     }else{
         graph->readGraph(path, 'U');
     }
+
+    cout<<"Zakończono wczytywanie grafu."<<endl<<endl;
 }
 
 
