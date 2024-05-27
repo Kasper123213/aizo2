@@ -130,7 +130,7 @@ void Graph::makeList() {
     }
 }
 
-void Graph::printMatrix() {
+void Graph::printMatrix() {//todo popracowac nad wyswietlaniem macierzy
     if(vertices == 0){
         cout<<"Macierz pusta"<<endl;
     }else{
@@ -138,7 +138,7 @@ void Graph::printMatrix() {
         for(int row = 0; row<vertices; row++){
             cout<<row<<" ->\t";
             for(int col = 0; col<edges; col++){
-                cout<<matrix[row]->get(col)<<"\t| ";
+                cout<<matrix[row]->get(col)<<"\t|";
             }
             cout<<endl;
         }
@@ -168,11 +168,16 @@ void Graph::printList() {
     }
 }
 
-void Graph::randomGraph(int vertices, int density, char type) {
+void Graph::randomGraph(int vertices, int density, char type) {//todo ulepszyc generowanie na przyklad losowanie  krawedzi z puli
     clearRepresentations();
 
-    this->vertices = vertices;
-    this->edges = int(density/100.0 * vertices * (vertices-1) / 2);
+    this->vertices = vertices;//todo zmienic generator
+
+    if(type == 'U'){
+        this->edges = int(density/100.0 * vertices * (vertices-1) / 2);
+    }else{
+        this->edges = int(density/100.0 * vertices * (vertices-1));
+    }
 
     makeMatrix();
     makeList();
@@ -197,26 +202,76 @@ void Graph::randomGraph(int vertices, int density, char type) {
         vertex = unvisited->get(to);
         addEdge(visited->get(from), vertex, weight, edgeId, type);
         edgeId++;
+        if(type == 'D'){//podwojenie drzewa aby zapewnic sciezki miedzy dwoma dowolnymi wierzcholkami
+            addEdge(vertex, visited->get(from), weight, edgeId, type);
+            edgeId++;
+        }
 
         visited->push(vertex);
         unvisited->remove(to);
     }
 
-
+    int vertexFrom, vertexTo;
     //dodawanie reszty krawędzi
     while(edgeId<edges){
         from = rand() % (visited->getSize());
         to = rand() % (visited->getSize());
 
-        vertex = visited->get(to);
-        if(from == to or list[from][0]->find(vertex) != -1)continue;
-
+        vertexFrom = visited->get(from);
+        vertexTo = visited->get(to);
+        if(vertexFrom == vertexTo or list[vertexFrom][0]->find(vertexTo) != -1)continue;
         weight = rand() % (99)+1;//todo zmienic maxa
-        addEdge(visited->get(from), vertex, weight, edgeId, type);
+        addEdge(vertexFrom, vertexTo, weight, edgeId, type);
         edgeId++;
-
     }
 
     delete visited;
     delete unvisited;
 }
+
+
+//zapisanie rozwiązania do pliku
+void Graph::saveGraph() {
+    int index = 1;
+    string name;
+    while (true) {
+        name = "graph" + to_string(index) + ".txt";
+        ifstream file(name);
+        if (not file.good()) break;
+        index++;
+    }
+
+    // Otwarcie pliku w trybie do zapisu (truncation)
+    ofstream file1(name, ios::trunc);
+
+    int from, to, weight;
+    // Sprawdzenie, czy plik został otwarty poprawnie
+    if (file1.is_open()) {
+        file1 << edges << " " << vertices << endl;
+
+        for (int edge = 0; edge < edges; edge++) {
+            from = -1;
+            to = -1;
+            for(int vertex = 0; vertex<vertices; vertex++){
+                if(matrix[vertex]->get(edge) > 0){
+                    if(from == -1) {
+                        from = vertex;
+                    }else{
+                        to = vertex;
+                    }
+                    weight = matrix[vertex]->get(edge);
+                }else if(matrix[vertex]->get(edge) < 0){
+                    to = vertex;
+                }
+            }
+
+            file1 << from << " " << to << " " << weight << endl;
+        }
+        file1.close();
+
+        cout << "Zapisano do pliku." << endl;
+    } else {
+        cout << "Błąd podczas otwierania pliku." << endl;
+    }
+}
+

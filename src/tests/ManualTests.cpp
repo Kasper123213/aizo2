@@ -3,7 +3,7 @@
 //
 
 #include "ManualTests.h"
-#include "../algorithms/Prim.h"
+#include "../algorithms/MSTalgorithms.h"
 
 using namespace std;
 
@@ -14,12 +14,12 @@ ManualTests::ManualTests(){
 
     representation = choseRepresentation();
 
-    char choice = 'q';
+    char choice ;
     do{
         cout<<"Co chcesz zrobić:"<<endl
             << "a) Wczytaj dane z pliku."<<endl
             << "b) Wygeneruj graf losowo."<<endl
-            << "c) Wyświetl macierzową reprezentacje grafu."<<endl;
+            << "c) Wyświetl graf."<<endl;
 
 
 
@@ -31,7 +31,8 @@ ManualTests::ManualTests(){
                     << "e) Algorytm Forda-Bellmana"<<endl;
             }
 
-            cout<<"q) Wyjście"<<endl<<">>";
+            cout<<"f) Zapisz graf do pliku"<<endl
+            <<"q) Wyjście"<<endl<<">>";
         cin>>choice;
         cout<<endl<<endl;
 
@@ -78,9 +79,8 @@ ManualTests::ManualTests(){
                 }
                 if (problem == ManualTests::Problem::MST){
                     graph->randomGraph(vertices, density, 'U');
-//                    graph->randomGraph(vertices, density, 'D');
                 }else{
-                    graph->randomGraph(vertices, density, 'U');
+                    graph->randomGraph(vertices, density, 'D');
                 }
 
                 break;
@@ -91,24 +91,35 @@ ManualTests::ManualTests(){
                 break;
             case 'd':
                 if (problem == ManualTests::Problem::MST){
-                    Prim* prim = new Prim(graph->matrix, graph->list);
+                    MSTalgorithms* mstAlgorithms = new MSTalgorithms(graph);
                     if (representation == ManualTests::Representation::MATRIX) {
                         //todo mierzenie czasu
-                        prim->startWithMatrix();
+                        mstAlgorithms->startPrimWithMatrix();
                     }else{
-                        //todo prim->startWithList();
+                        mstAlgorithms->startPrimWithList();
                     }
+                    delete mstAlgorithms;
                 }else{
                     //todo Dijkstra
                 }
                 break;
             case 'e':
                 if (problem == ManualTests::Problem::MST){
-                    //todo Kruskal
+                    MSTalgorithms* mstAlgorithms = new MSTalgorithms(graph);
+                    if (representation == ManualTests::Representation::MATRIX) {
+                        //todo mierzenie czasu
+                        mstAlgorithms->startKruskalWithMatrix();
+                    }else{
+                        mstAlgorithms->startKruskalWithList();
+                    }
+                    delete mstAlgorithms;
                 }else{
                     //todo Bellman-Ford
                 }
                 break;
+
+            case 'f':
+                graph->saveGraph();
         }
     }while(choice!='q');
 }
@@ -131,13 +142,13 @@ ManualTests::Problem ManualTests::choseProblem() {
 
 //Wybór reprezentacji
 ManualTests::Representation ManualTests::choseRepresentation() {
-    char choice = 'a';
+    char choice;
     do{
         cout<<"Wybierz problem:"<<endl
             << "a) Reprezentacja macierzowa (macierz incydencji),"<<endl
             << "b) Reprezentacja listowa (lista następników/poprzedników)"<<endl
             <<endl<<">>";
-//        cin>>choice;
+        cin>>choice;
         cout<<endl<<endl;
 
         if (choice == 'a') return Representation::MATRIX;
@@ -157,9 +168,9 @@ void ManualTests::readFromFile() {
     path = "C:\\Users\\radom\\OneDrive\\Pulpit\\aizo\\aizo2\\files\\opisGrafNieskierowany.txt";
 
     if (problem == ManualTests::Problem::MST){
-        graph->readGraph(path, 'D');
-    }else{
         graph->readGraph(path, 'U');
+    }else{
+        graph->readGraph(path, 'D');
     }
 
     cout<<"Zakończono wczytywanie grafu."<<endl<<endl;

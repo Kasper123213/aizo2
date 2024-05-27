@@ -11,9 +11,6 @@
 using namespace std;
 class Graph {
 private:
-    int vertices;
-    int edges;
-
     void clearRepresentations();
     void clearMatrix();
     void makeMatrix();
@@ -27,11 +24,16 @@ public:
     Table **matrix; //wierzchołek -> wagi kolejnych krawędzi //waga ujemna jesli krawedz idzie do, dodatnia jesli wychodzi
     Table ***list;//wierzchołek -> następnicy -> wagi następników
 
+    int vertices;
+    int edges;
+
     void readGraph(const string& path, char type);
     void printMatrix();
     void printList();
 
     void randomGraph(int vertices, int density, char type);
+
+    void saveGraph();
 };
 
 

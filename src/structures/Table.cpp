@@ -91,3 +91,4 @@ void Table::remove(int index) {
     head = newHead;                            //ustawianie wskaznika poczatku starej tablicy na nowa tablice
 
 }
+
