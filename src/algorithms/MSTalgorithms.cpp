@@ -5,12 +5,12 @@ MSTalgorithms::MSTalgorithms(Graph* graph) {
     this->graph = graph;
     mstWeight = 0;
     makeList();
-    parents = new Table();
+    sets = new Table();
 }
 
 MSTalgorithms::~MSTalgorithms() {
-    clearList();
-    delete parents;
+    clearMST();
+    delete sets;
 }
 
 
@@ -50,7 +50,7 @@ void MSTalgorithms::addToMST(int from, int to, int weight) {
 }
 
 
-void MSTalgorithms::clearList() {
+void MSTalgorithms::clearMST() {
     if(graph->vertices == 0) return;
     for(int vertex = 0; vertex < graph->vertices; vertex++){
         for(int i=0; i<2; i++){
@@ -183,7 +183,7 @@ void MSTalgorithms::startPrimWithList() {
 
 void MSTalgorithms::startKruskalWithMatrix() {
     for(int i=0; i<graph->vertices; i++){
-        parents->push(i);
+        sets->push(i);
     }
 
     Table* edges = new Table();
@@ -225,7 +225,7 @@ void MSTalgorithms::startKruskalWithMatrix() {
             }
         }
         edges->remove(minEdge);                                     //niepotrzebną krawędź usuwamy
-        parents->setValue(minVertex1Group, minVertex2Group);// a dane zapisujemy do obiektu
+        sets->setValue(minVertex1Group, minVertex2Group);// a dane zapisujemy do obiektu
         addToMST(minVertex1, minVertex2, minWeight);
         mstWeight += minWeight;
         neededEdges--;
@@ -240,10 +240,46 @@ void MSTalgorithms::startKruskalWithMatrix() {
 }
 
 int MSTalgorithms::findGroup(int vertex) {
-    if(parents->get(vertex) == vertex) return vertex;
-    else return findGroup(parents->get(vertex));
+    if(sets->get(vertex) == vertex) return vertex;
+    else return findGroup(sets->get(vertex));
 }
 
 void MSTalgorithms::startKruskalWithList() {
+    for(int i=0; i<graph->vertices; i++){
+        sets->push(i);
+    }
+    
+    int minVertex1, minVertex2, minWeight, minVertex1Group, minVertex2Group, currentWeight, successor, vertex1Group, vertex2Group;
+    int neededEdges = graph->vertices - 1;
+    while(neededEdges>0) {   //Szukamy n-1 krawędzi
+        minVertex1 = -1;
+        minVertex2 = -1;
+        minVertex1Group = 0;
+        minVertex2Group = 0;
+        minWeight = numeric_limits<int>::max();
 
+        for(int vertex=0; vertex<graph->vertices; vertex++){
+            for(int successorId=0; successorId<graph->list[vertex][0]->getSize(); successorId++){
+                currentWeight = graph->list[vertex][1]->get(successorId);
+                successor = graph->list[vertex][0]->get(successorId);
+                vertex1Group = findGroup(vertex);
+                vertex2Group = findGroup(successor);
+                if(currentWeight<minWeight and vertex1Group != vertex2Group){
+                    minWeight = currentWeight;
+                    minVertex1 = vertex;
+                    minVertex2 = successor;
+                    minVertex1Group = vertex1Group;
+                    minVertex2Group = vertex2Group;
+                }
+            }
+        }
+        sets->setValue(minVertex1Group, minVertex2Group);
+        addToMST(minVertex1, minVertex2, minWeight);
+        mstWeight+=minWeight;
+        neededEdges--;
+    }
+
+    printMST();
+    cout<<"Koszt: "<<mstWeight<<endl;//todo przeniesc to gdzies
+    
 }

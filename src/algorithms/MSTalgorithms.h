@@ -13,11 +13,11 @@ private:
     Table ***mst;//wierzchołek -> następnicy -> wagi następników
 
     //potrzebne do kruskala
-    Table* parents;
+    Table* sets;
 
     int mstWeight;
     void addToMST(int from, int to, int weight);
-    void clearList();
+    void clearMST();
     void makeList();
 public:
     MSTalgorithms (Graph* graph);

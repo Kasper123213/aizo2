@@ -171,7 +171,7 @@ void Graph::printList() {
 void Graph::randomGraph(int vertices, int density, char type) {//todo ulepszyc generowanie na przyklad losowanie  krawedzi z puli
     clearRepresentations();
 
-    this->vertices = vertices;//todo zmienic generator
+    this->vertices = vertices;
 
     if(type == 'U'){
         this->edges = int(density/100.0 * vertices * (vertices-1) / 2);
@@ -217,12 +217,11 @@ void Graph::randomGraph(int vertices, int density, char type) {//todo ulepszyc g
         from = rand() % (visited->getSize());
         to = rand() % (visited->getSize());
 
-        vertexFrom = visited->get(from);
-        vertexTo = visited->get(to);
-        if(vertexFrom == vertexTo or list[vertexFrom][0]->find(vertexTo) != -1)continue;
-        weight = rand() % (99)+1;//todo zmienic maxa
-        addEdge(vertexFrom, vertexTo, weight, edgeId, type);
-        edgeId++;
+        if(from != to and list[from][0]->find(to) == -1) {
+            weight = rand() % (99) + 1;//todo zmienic maxa
+            addEdge(from, to, weight, edgeId, type);
+            edgeId++;
+        }
     }
 
     delete visited;
