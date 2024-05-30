@@ -205,7 +205,7 @@ void Graph::randomGraph(int vertices, int density) {//todo ulepszyc generowanie 
 
         if(from == to)continue;
 
-        weight = rand() % (99)+1;//todo zmienic maxa
+        weight = rand() % (99)+1;
 
         vertex = unvisited->get(to);
         addEdge(visited->get(from), vertex, weight, edgeId);

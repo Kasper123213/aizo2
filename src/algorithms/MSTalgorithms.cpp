@@ -125,8 +125,6 @@ void MSTalgorithms::startPrimWithMatrix() {
     }
     delete visited;
     delete unvisited;
-    printMST();//todo przenieść gdzieś
-    cout<<"koszt: "<<mstWeight<<endl;
 }
 
 
@@ -177,9 +175,14 @@ void MSTalgorithms::startPrimWithList() {
     }
     delete visited;
     delete unvisited;
-    printMST();//todo przenieść gdzieś
-    cout<<"koszt: "<<mstWeight<<endl;
 }
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+///     Algorytm Kruskala
+///     Z użyciem Macierzy
+//////////////////////////////////////////////////////////////////////////////////////
+
 
 void MSTalgorithms::startKruskalWithMatrix() {
     for(int i=0; i<graph->vertices; i++){
@@ -231,18 +234,19 @@ void MSTalgorithms::startKruskalWithMatrix() {
         neededEdges--;
 
     }
-
     delete edges;
-    printMST();
-    cout<<"Koszt: "<<mstWeight<<endl;//todo przeniesc to gdzies
-
-
 }
 
 int MSTalgorithms::findGroup(int vertex) {
     if(sets->get(vertex) == vertex) return vertex;
     else return findGroup(sets->get(vertex));
 }
+
+//////////////////////////////////////////////////////////////////////////////////////
+///     Algorytm Kruskala
+///     Z użyciem listy
+//////////////////////////////////////////////////////////////////////////////////////
+
 
 void MSTalgorithms::startKruskalWithList() {
     for(int i=0; i<graph->vertices; i++){
@@ -278,8 +282,4 @@ void MSTalgorithms::startKruskalWithList() {
         mstWeight+=minWeight;
         neededEdges--;
     }
-
-    printMST();
-    cout<<"Koszt: "<<mstWeight<<endl;//todo przeniesc to gdzies
-    
 }

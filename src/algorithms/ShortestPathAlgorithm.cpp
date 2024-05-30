@@ -25,6 +25,12 @@ ShortestPathAlgorithm::~ShortestPathAlgorithm() {
 }
 
 
+//////////////////////////////////////////////////////////////////////////////////////
+///     Algorytm Dijkstra
+///     Z użyciem macierzy
+//////////////////////////////////////////////////////////////////////////////////////
+
+
 void ShortestPathAlgorithm::startDijkstraWithMatrix() {
     Table* neighbours = new Table();
     Table* neighboursEdges = new Table();
@@ -46,7 +52,6 @@ void ShortestPathAlgorithm::startDijkstraWithMatrix() {
 
     while(q->getSize()>0){
         minValue = numeric_limits<int>::max();
-        cout<<endl;
         //minimalna wartosc w zbiorze q
         for(int vertexId=0; vertexId<q->getSize();vertexId++){
             vertex = q->get(vertexId);
@@ -89,21 +94,19 @@ void ShortestPathAlgorithm::startDijkstraWithMatrix() {
 
     }
 
+    paths->setValue(start, start);
     delete q;
     delete s;
     delete neighboursEdges;
     delete neighbours;
 
-    for(int i=0; i<weights->getSize(); i++){//todo przeniesc to gdzies
-        cout<<weights->get(i)<<", ";
-    }
-    cout<<endl;
-    for(int i=0; i<paths->getSize(); i++){
-        cout<<paths->get(i)<<", ";
-    }
-    cout<<endl;
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////
+///     Algorytm Dijkstra
+///     Z użyciem listy
+//////////////////////////////////////////////////////////////////////////////////////
 
 void ShortestPathAlgorithm::startDijkstraWithList() {
     Table* s = new Table();
@@ -124,7 +127,6 @@ void ShortestPathAlgorithm::startDijkstraWithList() {
 
     while(q->getSize()>0){
         minValue = numeric_limits<int>::max();
-        cout<<endl;
         //minimalna wartosc w zbiorze q
         for(int vertexId=0; vertexId<q->getSize();vertexId++){
             vertex = q->get(vertexId);
@@ -151,31 +153,20 @@ void ShortestPathAlgorithm::startDijkstraWithList() {
                 }
             }
         }
-
-        for(int i=0; i<weights->getSize(); i++){
-            cout<<weights->get(i)<<", ";
-        }
-        cout<<endl;
-        for(int i=0; i<paths->getSize(); i++){
-            cout<<paths->get(i)<<", ";
-        }
-        cout<<endl<<endl;
     }
+
+    paths->setValue(start, start);
 
     delete q;
     delete s;
-
-    for(int i=0; i<weights->getSize(); i++){//todo przeniesc to gdzies
-        cout<<weights->get(i)<<", ";
-    }
-    cout<<endl;
-    for(int i=0; i<paths->getSize(); i++){
-        cout<<paths->get(i)<<", ";
-    }
-    cout<<endl;
 }
 
-bool test;
+
+//////////////////////////////////////////////////////////////////////////////////////
+///     Algorytm Bellman Ford
+///     Z użyciem macierzy
+//////////////////////////////////////////////////////////////////////////////////////
+
 void ShortestPathAlgorithm::startBellmanFordWithMatrix() {
     weights->setAllValues(numeric_limits<int>::max());
     paths->setAllValues(-1);
@@ -202,6 +193,7 @@ void ShortestPathAlgorithm::startBellmanFordWithMatrix() {
 
             if(paths->get(vertexFrom)==-1)continue; //jesli wierzchołek jeszcze nie zbadany to pomijamy iterację
             newWeight = weights->get(vertexFrom) + graph->matrix[vertexFrom]->get(edge);
+            if(newWeight<0) newWeight = numeric_limits<int>::max();
             if(weights->get(vertexTo) > newWeight){
                 weights->setValue(vertexTo, newWeight);
                 paths->setValue(vertexTo, vertexFrom);
@@ -210,19 +202,66 @@ void ShortestPathAlgorithm::startBellmanFordWithMatrix() {
         }
         if(!changes) break;
     }
-    weights->setValue(start, -1);
-
-    for(int i=0; i<weights->getSize(); i++){//todo przeniesc to gdzies
-        cout<<weights->get(i)<<", ";
-    }
-    cout<<endl;
-    for(int i=0; i<paths->getSize(); i++){
-        cout<<paths->get(i)<<", ";
-    }
-    cout<<endl;
 }
 
 
+
+//////////////////////////////////////////////////////////////////////////////////////
+///     Algorytm Bellman Ford
+///     Z użyciem listy
+//////////////////////////////////////////////////////////////////////////////////////
+
 void ShortestPathAlgorithm::startBellmanFordWithList() {
-    //todo BF z listą
+    weights->setAllValues(numeric_limits<int>::max());
+    paths->setAllValues(-1);
+
+    weights->setValue(start, 0);
+    paths->setValue(start, start);
+
+
+    int vertexTo, newWeight;
+    bool changes;
+    for(int i=0; i<graph->vertices-1; i++){
+        changes = false;
+
+        int vertexFrom = 0;//zamienic
+        for(int vertexToId=0; vertexFrom<graph->vertices; vertexToId++){//iterowanie po następnikach wierzchołków
+            if(vertexToId >= graph->list[vertexFrom][0]->getSize()){//czyli po każdej krawędzi
+                vertexToId = -1;
+                vertexFrom++;
+                continue;
+            }
+
+            vertexTo = graph->list[vertexFrom][0]->get(vertexToId);
+            newWeight = weights->get(vertexFrom) + graph->list[vertexFrom][1]->get(vertexToId);
+            if(newWeight<0) newWeight = numeric_limits<int>::max();
+            if(weights->get(vertexTo)>newWeight){
+                weights->setValue(vertexTo, newWeight);
+                paths->setValue(vertexTo, vertexFrom);
+                changes = true;
+            }
+        }
+
+        if(!changes) break;
+    }
+}
+
+void ShortestPathAlgorithm::showSolution() {
+    cout<<"Koszt dojścia z wierzchołka "<<start<<" do wierzchołka "<<stop<<" wynosi: "<<weights->get(stop)<<endl;
+    cout<<"Ścieżka to:"<<endl;
+    Table* solution = new Table();
+
+    int nextVertex = stop;
+    do{
+        solution->push(nextVertex);
+        nextVertex = paths->get(nextVertex);
+    }while(nextVertex != start);
+    solution->push(start);
+
+    for(int i=solution->getSize()-1; i>0; i--){
+        cout<<solution->get(i)<<"->";
+    }
+    cout<<solution->get(0)<<endl;
+
+    delete solution;
 }

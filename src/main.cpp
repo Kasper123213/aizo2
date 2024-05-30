@@ -13,13 +13,13 @@ int main() {
     cout << "Autor: Kasper Radom 264023" << endl << endl;
 
 
-    char choice = 'b';
+    char choice;
     do{
         cout<<"Który problem chcesz rozwiązać:"<<endl
             <<"a) Testy automatyczne"<<endl
             <<"b) Testy manualne"<<endl
             <<"q) Wyjście"<<endl<<">>";
-//        cin>>choice;
+        cin>>choice;
         cout<<endl<<endl;
 
         switch (choice) {

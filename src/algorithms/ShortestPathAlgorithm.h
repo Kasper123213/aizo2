@@ -24,6 +24,8 @@ public:
 
     void startBellmanFordWithMatrix();
     void startBellmanFordWithList();
+
+    void showSolution();
 };
 
 

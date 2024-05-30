@@ -5,6 +5,7 @@
 #include "ManualTests.h"
 #include "../algorithms/MSTalgorithms.h"
 #include "../algorithms/ShortestPathAlgorithm.h"
+#include "Time.h"
 
 using namespace std;
 
@@ -23,19 +24,30 @@ ManualTests::ManualTests(){
             << "c) Wyświetl graf."<<endl;
 
 
-
-            if (problem == ManualTests::Problem::MST){
-                cout<< "d) Algorytm Prima"<<endl
-                   << "e) Algorytm Kruskala"<<endl;
+            if(representation == ManualTests::Representation::MATRIX) {
+                if (problem == ManualTests::Problem::MST) {
+                    cout << "d) Algorytm Prima na macierzy incydencji." << endl
+                         << "e) Algorytm Kruskala na macierzy incydencji." << endl;
+                } else {
+                    cout << "d) Algorytm Dijkstry na macierzy incydencji." << endl
+                         << "e) Algorytm Forda-Bellmana na macierzy incydencji." << endl;
+                }
             }else{
-                cout<< "d) Algorytm Dijkstry"<<endl
-                    << "e) Algorytm Forda-Bellmana"<<endl;
+                if (problem == ManualTests::Problem::MST){
+                    cout<< "d) Algorytm Prima na liście następników."<<endl
+                        << "e) Algorytm Kruskala na liście następników."<<endl;
+                }else{
+                    cout<< "d) Algorytm Dijkstry na liście następników."<<endl
+                        << "e) Algorytm Forda-Bellmana na liście następników."<<endl;
+                }
             }
 
-            cout<<"f) Zapisz graf do pliku"<<endl
-            <<"q) Wyjście"<<endl<<">>";
+            cout<<"f) Zapisz graf do pliku."<<endl
+            <<"q) Wyjście."<<endl<<">>";
         cin>>choice;
         cout<<endl<<endl;
+
+        Time* time = new Time();
 
         switch (choice) {
             case 'a':
@@ -78,7 +90,9 @@ ManualTests::ManualTests(){
                         cout<<"Błędny wybór"<<endl<<endl;
                         return;
                 }
+                time->start();
                 graph->randomGraph(vertices, density);
+                cout<<time->getTimeSeconds()<<endl;
 
 
                 break;
@@ -91,11 +105,17 @@ ManualTests::ManualTests(){
                 if (problem == ManualTests::Problem::MST){
                     MSTalgorithms* mstAlgorithms = new MSTalgorithms(graph);
                     if (representation == ManualTests::Representation::MATRIX) {
-                        //todo mierzenie czasu
+                        time->start();
                         mstAlgorithms->startPrimWithMatrix();
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
                     }else{
+                        time->start();
                         mstAlgorithms->startPrimWithList();
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
                     }
+//                    cout<<"Minimalne drzewo spinające:"<<endl; todo
+//                    mstAlgorithms->printMST();
+                    cout<<"koszt: "<<mstAlgorithms->mstWeight<<endl<<endl<<endl;
                     delete mstAlgorithms;
                 }else{
                     int start, stop;
@@ -107,11 +127,15 @@ ManualTests::ManualTests(){
 
                     ShortestPathAlgorithm* shortestPathAlgorithm = new ShortestPathAlgorithm(graph, start, stop);
                     if (representation == ManualTests::Representation::MATRIX) {
-                        //todo mierzenie czasu
+                        time->start();
                         shortestPathAlgorithm->startDijkstraWithMatrix();
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
                     }else{
+                        time->start();
                         shortestPathAlgorithm->startDijkstraWithList();
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
                     }
+                     shortestPathAlgorithm->showSolution();
                     delete shortestPathAlgorithm;
                 }
                 break;
@@ -119,11 +143,17 @@ ManualTests::ManualTests(){
                 if (problem == ManualTests::Problem::MST){
                     MSTalgorithms* mstAlgorithms = new MSTalgorithms(graph);
                     if (representation == ManualTests::Representation::MATRIX) {
-                        //todo mierzenie czasu
+                        time->start();
                         mstAlgorithms->startKruskalWithMatrix();
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
                     }else{
+                        time->start();
                         mstAlgorithms->startKruskalWithList();
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
                     }
+//                    cout<<"Minimalne drzewo spinające:"<<endl; todo
+//                    mstAlgorithms->printMST();
+//                    cout<<"koszt: "<<mstAlgorithms->mstWeight<<endl<<endl<<endl;
                     delete mstAlgorithms;
                 }else{
                     int start, stop;
@@ -135,11 +165,15 @@ ManualTests::ManualTests(){
 
                     ShortestPathAlgorithm* shortestPathAlgorithm = new ShortestPathAlgorithm(graph, start, stop);
                     if (representation == ManualTests::Representation::MATRIX) {
-                        //todo mierzenie czasu
+                        time->start();
                         shortestPathAlgorithm->startBellmanFordWithMatrix();
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
                     }else{
+                        time->start();
                         shortestPathAlgorithm->startBellmanFordWithList();
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
                     }
+                    shortestPathAlgorithm->showSolution();
                     delete shortestPathAlgorithm;
                 }
                 break;
@@ -156,13 +190,13 @@ ManualTests::~ManualTests(){
 
 //Wybór problemu
 ManualTests::Problem ManualTests::choseProblem() {
-    char choice = 'b';
+    char choice;
     do{
         cout<<"Wybierz problem:"<<endl
             << "a) Wyznaczanie minimalnego drzewa rozpinającego (MST)"<<endl
             << "b) Wyznaczanie najkrótszej ścieżki w grafie"<<endl
             <<endl<<">>";
-//        cin>>choice;
+        cin>>choice;
         cout<<endl<<endl;
 
         if (choice == 'a') {

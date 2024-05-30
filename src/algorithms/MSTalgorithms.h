@@ -15,7 +15,6 @@ private:
     //potrzebne do kruskala
     Table* sets;
 
-    int mstWeight;
     void addToMST(int from, int to, int weight);
     void clearMST();
     void makeList();
@@ -32,6 +31,8 @@ public:
     void startKruskalWithList();
 
     int findGroup(int vertex);
+
+    int mstWeight;
 };
 
 #endif //AIZO2_MSTALGORITHMS_H
