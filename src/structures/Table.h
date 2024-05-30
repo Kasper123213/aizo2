@@ -38,17 +38,18 @@ public:
     void setSize(int newSize);
 
     //ustawianie wartosci na podanym indeksie
-    void setValue(int value, int index);
+    void setValue(int index, int value);
 
     //usuwanie tablicy
     void deleteTable();
 
     //wypelnianie tabeli zerami
-    void fillZeros();
+    void setAllValues(int value);
 
 //metoda usuwajaca element o podanym indeksie z tablicy
     void remove(int index);
 
+    void clear();
 };
 
 

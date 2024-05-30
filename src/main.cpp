@@ -47,15 +47,20 @@ int main() {
 //int main(){
 //    Table* t = new Table();
 //    t->push(4);
-//    t->push(2);
-//    t->push(8);
-//    t->push(98);
-//    t->push(86);
-//    t->push(96);
-//    t->push(76);
-//    t->push(11);
+//    t->push(4);
+//    t->clear();
+//    t->push(4);
+//    t->clear();
+//    t->clear();
+//    t->clear();
+//    t->push(4);
+//    t->push(4);
+//    t->clear();
+//    t->push(4);
 //
-//    t->sort();
+//    t->push(4);
+//    t->push(4);
+//
 //    for(int i=0; i<t->getSize(); i++){
 //        cout<<t->get(i)<<endl;
 //    }

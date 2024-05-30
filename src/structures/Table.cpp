@@ -68,9 +68,9 @@ void Table::setValue(int index, int value) {
     head[index] = value;
 }
 
-void Table::fillZeros() {
+void Table::setAllValues(int value) {
     for(int i=0; i<size; i++){
-        setValue(i, 0);
+        setValue(i, value);
     }
 }
 
@@ -80,6 +80,7 @@ void Table::remove(int index) {
         return;
     }
     int *newHead = new int[size - 1];   //ustawianie nowego wskaznika na nowa, wiekszą tablice
+
     for (int i = 0; i < index; i++) {   //wstawianie elementow starej tablicy od poczatku do podanego indeksu
         newHead[i] = head[i];
     }
@@ -92,3 +93,9 @@ void Table::remove(int index) {
 
 }
 
+
+void Table::clear(){
+    while(size>0){
+        remove(0);
+    }
+}

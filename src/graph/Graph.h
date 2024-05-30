@@ -16,7 +16,9 @@ private:
     void makeMatrix();
     void clearList();
     void makeList();
-    void addEdge(int out, int in, int weight, int edgeID, char type);
+    void addEdge(int out, int in, int weight, int edgeID);
+
+    char type;
 public:
     Graph();
     ~Graph();
@@ -27,13 +29,14 @@ public:
     int vertices;
     int edges;
 
-    void readGraph(const string& path, char type);
+    void readGraph(const string& path);
     void printMatrix();
     void printList();
 
-    void randomGraph(int vertices, int density, char type);
+    void randomGraph(int vertices, int density);
 
     void saveGraph();
+    void setType(char type);
 };
 
 

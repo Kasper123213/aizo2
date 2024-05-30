@@ -15,7 +15,7 @@ Graph::~Graph() {
 }
 
 
-void Graph::readGraph(const string& path, char type) {
+void Graph::readGraph(const string& path) {
     clearRepresentations();
 
     // Otwórz plik
@@ -45,7 +45,7 @@ void Graph::readGraph(const string& path, char type) {
         while (file >> out) {
             file >> in;
             file >> weight;
-            addEdge(out, in, weight, edgeID, type);
+            addEdge(out, in, weight, edgeID);
             edgeID++;
         }
     }catch(const ifstream::failure& e){
@@ -56,7 +56,7 @@ void Graph::readGraph(const string& path, char type) {
 }
 
 
-void Graph::addEdge(int out, int in, int weight, int edgeID, char type) {
+void Graph::addEdge(int out, int in, int weight, int edgeID) {
 //    uzupelnianie do macierzy
     matrix[out]->setValue(edgeID, weight);
 
@@ -103,7 +103,7 @@ void Graph::makeMatrix() {
     for(int vertex = 0; vertex < vertices; vertex++){
         matrix[vertex] = new Table();
         matrix[vertex]->setSize(edges);
-        matrix[vertex]->fillZeros();
+        matrix[vertex]->setAllValues(0);
     }
 }
 
@@ -131,14 +131,22 @@ void Graph::makeList() {
 }
 
 void Graph::printMatrix() {//todo popracowac nad wyswietlaniem macierzy
+    int value;
+    int maxLen;
+    string tekstValue;
+    if(type=='U') maxLen = 2;
+    else maxLen = 3;
+
     if(vertices == 0){
         cout<<"Macierz pusta"<<endl;
     }else{
         cout<<"Macierz incydencji:"<<endl;
         for(int row = 0; row<vertices; row++){
-            cout<<row<<" ->\t";
+            cout<<row<<" ->";
             for(int col = 0; col<edges; col++){
-                cout<<matrix[row]->get(col)<<"\t|";
+                value = matrix[row]->get(col);
+                tekstValue = to_string(value);
+                cout<<tekstValue + string(maxLen - tekstValue.length(), ' ')<<"|";
             }
             cout<<endl;
         }
@@ -168,8 +176,8 @@ void Graph::printList() {
     }
 }
 
-void Graph::randomGraph(int vertices, int density, char type) {//todo ulepszyc generowanie na przyklad losowanie  krawedzi z puli
-    clearRepresentations();
+void Graph::randomGraph(int vertices, int density) {//todo ulepszyc generowanie na przyklad losowanie  krawedzi z puli
+    clearRepresentations();//todo krawedzie w dwie strony powinny miec rozne wagi
 
     this->vertices = vertices;
 
@@ -200,10 +208,10 @@ void Graph::randomGraph(int vertices, int density, char type) {//todo ulepszyc g
         weight = rand() % (99)+1;//todo zmienic maxa
 
         vertex = unvisited->get(to);
-        addEdge(visited->get(from), vertex, weight, edgeId, type);
+        addEdge(visited->get(from), vertex, weight, edgeId);
         edgeId++;
         if(type == 'D'){//podwojenie drzewa aby zapewnic sciezki miedzy dwoma dowolnymi wierzcholkami
-            addEdge(vertex, visited->get(from), weight, edgeId, type);
+            addEdge(vertex, visited->get(from), weight, edgeId);
             edgeId++;
         }
 
@@ -219,7 +227,7 @@ void Graph::randomGraph(int vertices, int density, char type) {//todo ulepszyc g
 
         if(from != to and list[from][0]->find(to) == -1) {
             weight = rand() % (99) + 1;//todo zmienic maxa
-            addEdge(from, to, weight, edgeId, type);
+            addEdge(from, to, weight, edgeId);
             edgeId++;
         }
     }
@@ -272,5 +280,9 @@ void Graph::saveGraph() {
     } else {
         cout << "Błąd podczas otwierania pliku." << endl;
     }
+}
+
+void Graph::setType(char type) {
+    this->type = type;
 }
 

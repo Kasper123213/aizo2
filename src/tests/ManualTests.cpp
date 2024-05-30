@@ -4,6 +4,7 @@
 
 #include "ManualTests.h"
 #include "../algorithms/MSTalgorithms.h"
+#include "../algorithms/ShortestPathAlgorithm.h"
 
 using namespace std;
 
@@ -77,11 +78,8 @@ ManualTests::ManualTests(){
                         cout<<"Błędny wybór"<<endl<<endl;
                         return;
                 }
-                if (problem == ManualTests::Problem::MST){
-                    graph->randomGraph(vertices, density, 'U');
-                }else{
-                    graph->randomGraph(vertices, density, 'D');
-                }
+                graph->randomGraph(vertices, density);
+
 
                 break;
             case 'c':
@@ -100,7 +98,21 @@ ManualTests::ManualTests(){
                     }
                     delete mstAlgorithms;
                 }else{
-                    //todo Dijkstra
+                    int start, stop;
+                    cout<<"Podaj wierzchołek początkowy"<<endl<<">>";
+                    cin>>start;
+                    cout<<endl<<"Podaj wierzchołek końcowy"<<endl<<">>";
+                    cin>>stop;
+                    cout<<endl;
+
+                    ShortestPathAlgorithm* shortestPathAlgorithm = new ShortestPathAlgorithm(graph, start, stop);
+                    if (representation == ManualTests::Representation::MATRIX) {
+                        //todo mierzenie czasu
+                        shortestPathAlgorithm->startDijkstraWithMatrix();
+                    }else{
+                        shortestPathAlgorithm->startDijkstraWithList();
+                    }
+                    delete shortestPathAlgorithm;
                 }
                 break;
             case 'e':
@@ -114,7 +126,21 @@ ManualTests::ManualTests(){
                     }
                     delete mstAlgorithms;
                 }else{
-                    //todo Bellman-Ford
+                    int start, stop;
+                    cout<<"Podaj wierzchołek początkowy"<<endl<<">>";
+                    cin>>start;
+                    cout<<endl<<"Podaj wierzchołek końcowy"<<endl<<">>";
+                    cin>>stop;
+                    cout<<endl;
+
+                    ShortestPathAlgorithm* shortestPathAlgorithm = new ShortestPathAlgorithm(graph, start, stop);
+                    if (representation == ManualTests::Representation::MATRIX) {
+                        //todo mierzenie czasu
+                        shortestPathAlgorithm->startBellmanFordWithMatrix();
+                    }else{
+                        shortestPathAlgorithm->startBellmanFordWithList();
+                    }
+                    delete shortestPathAlgorithm;
                 }
                 break;
 
@@ -124,9 +150,13 @@ ManualTests::ManualTests(){
     }while(choice!='q');
 }
 
+ManualTests::~ManualTests(){
+    delete graph;
+}
+
 //Wybór problemu
 ManualTests::Problem ManualTests::choseProblem() {
-    char choice = 'a';
+    char choice = 'b';
     do{
         cout<<"Wybierz problem:"<<endl
             << "a) Wyznaczanie minimalnego drzewa rozpinającego (MST)"<<endl
@@ -135,8 +165,14 @@ ManualTests::Problem ManualTests::choseProblem() {
 //        cin>>choice;
         cout<<endl<<endl;
 
-        if (choice == 'a') return Problem::MST;
-        else if (choice == 'b') return Problem::SHORTEST_PATH;
+        if (choice == 'a') {
+            graph->setType('U');
+            return Problem::MST;
+        }
+        else if (choice == 'b'){
+            graph->setType('D');
+            return Problem::SHORTEST_PATH;
+        }
     }while(true);
 }
 
@@ -144,7 +180,7 @@ ManualTests::Problem ManualTests::choseProblem() {
 ManualTests::Representation ManualTests::choseRepresentation() {
     char choice;
     do{
-        cout<<"Wybierz problem:"<<endl
+        cout<<"Wybierz reprezentacje grafu:"<<endl
             << "a) Reprezentacja macierzowa (macierz incydencji),"<<endl
             << "b) Reprezentacja listowa (lista następników/poprzedników)"<<endl
             <<endl<<">>";
@@ -157,7 +193,7 @@ ManualTests::Representation ManualTests::choseRepresentation() {
 
 }
 
-ManualTests::~ManualTests() = default;
+
 
 void ManualTests::readFromFile() {
     string path;
@@ -167,11 +203,7 @@ void ManualTests::readFromFile() {
 
     path = "C:\\Users\\radom\\OneDrive\\Pulpit\\aizo\\aizo2\\files\\opisGrafNieskierowany.txt";
 
-    if (problem == ManualTests::Problem::MST){
-        graph->readGraph(path, 'U');
-    }else{
-        graph->readGraph(path, 'D');
-    }
+    graph->readGraph(path);
 
     cout<<"Zakończono wczytywanie grafu."<<endl<<endl;
 }
