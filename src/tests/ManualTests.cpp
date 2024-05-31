@@ -90,9 +90,7 @@ ManualTests::ManualTests(){
                         cout<<"Błędny wybór"<<endl<<endl;
                         return;
                 }
-                time->start();
                 graph->randomGraph(vertices, density);
-                cout<<time->getTimeSeconds()<<endl;
 
 
                 break;
@@ -107,11 +105,11 @@ ManualTests::ManualTests(){
                     if (representation == ManualTests::Representation::MATRIX) {
                         time->start();
                         mstAlgorithms->startPrimWithMatrix();
-                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }else{
                         time->start();
                         mstAlgorithms->startPrimWithList();
-                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }
 //                    cout<<"Minimalne drzewo spinające:"<<endl; todo
 //                    mstAlgorithms->printMST();
@@ -129,11 +127,11 @@ ManualTests::ManualTests(){
                     if (representation == ManualTests::Representation::MATRIX) {
                         time->start();
                         shortestPathAlgorithm->startDijkstraWithMatrix();
-                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }else{
                         time->start();
                         shortestPathAlgorithm->startDijkstraWithList();
-                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }
                      shortestPathAlgorithm->showSolution();
                     delete shortestPathAlgorithm;
@@ -145,11 +143,11 @@ ManualTests::ManualTests(){
                     if (representation == ManualTests::Representation::MATRIX) {
                         time->start();
                         mstAlgorithms->startKruskalWithMatrix();
-                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }else{
                         time->start();
                         mstAlgorithms->startKruskalWithList();
-                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }
 //                    cout<<"Minimalne drzewo spinające:"<<endl; todo
 //                    mstAlgorithms->printMST();
@@ -167,11 +165,11 @@ ManualTests::ManualTests(){
                     if (representation == ManualTests::Representation::MATRIX) {
                         time->start();
                         shortestPathAlgorithm->startBellmanFordWithMatrix();
-                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }else{
                         time->start();
                         shortestPathAlgorithm->startBellmanFordWithList();
-                        cout<<"Czas wykonania algorytmu: "<<time->getTimeSeconds()<<endl;
+                        cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }
                     shortestPathAlgorithm->showSolution();
                     delete shortestPathAlgorithm;

@@ -60,13 +60,10 @@ void Graph::addEdge(int out, int in, int weight, int edgeID) {
 //    uzupelnianie do macierzy
     matrix[out]->setValue(edgeID, weight);
 
-    if(in != out) {//uwzględnienie krawędzi idących do tego samego wierzchołka z ktorego wychodzą
-        //jesli krawędź jest pętlą to jest jedyna w kolumnie
-        if(type == 'D') {//D- directed
-            matrix[in]->setValue(edgeID, -weight);
-        }else{
-            matrix[in]->setValue(edgeID, weight);
-        }
+    if(type == 'D') {//D- directed
+        matrix[in]->setValue(edgeID, -weight);
+    }else{
+        matrix[in]->setValue(edgeID, weight);
     }
 
 // uzupelnianie listy
@@ -187,8 +184,8 @@ void Graph::randomGraph(int vertices, int density) {//todo ulepszyc generowanie 
         this->edges = int(density/100.0 * vertices * (vertices-1));
     }
 
-    makeMatrix();
     makeList();
+    makeMatrix();
     //tworzenie drzewa spinającego
     Table* visited = new Table();
     Table* unvisited = new Table();
@@ -211,6 +208,7 @@ void Graph::randomGraph(int vertices, int density) {//todo ulepszyc generowanie 
         addEdge(visited->get(from), vertex, weight, edgeId);
         edgeId++;
         if(type == 'D'){//podwojenie drzewa aby zapewnic sciezki miedzy dwoma dowolnymi wierzcholkami
+            weight = rand() % (99)+1;
             addEdge(vertex, visited->get(from), weight, edgeId);
             edgeId++;
         }

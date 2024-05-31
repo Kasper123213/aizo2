@@ -18,9 +18,9 @@ Table::~Table() {   //zwalnianie pamięci po tablicy
 }
 
 void Table::deleteTable() {
-    if (head != nullptr) {
-        delete[]head;
-    }
+    delete[]head;
+    head = nullptr;
+
 }
 
 int Table::getSize() { return size; }
