@@ -17,12 +17,14 @@ private:
 
     void addToMST(int from, int to, int weight);
     void clearMST();
-    void makeList();
+    void makeMST();
+    int findGroup(int vertex);
 public:
     MSTalgorithms (Graph* graph);
     ~MSTalgorithms();
 
     void printMST();
+    void update();
 
     void startPrimWithMatrix();
     void startPrimWithList();
@@ -30,7 +32,6 @@ public:
     void startKruskalWithMatrix();
     void startKruskalWithList();
 
-    int findGroup(int vertex);
 
     int mstWeight;
 };

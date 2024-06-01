@@ -184,8 +184,8 @@ void Graph::randomGraph(int vertices, int density) {//todo ulepszyc generowanie 
         this->edges = int(density/100.0 * vertices * (vertices-1));
     }
 
-    makeList();
     makeMatrix();
+    makeList();
     //tworzenie drzewa spinającego
     Table* visited = new Table();
     Table* unvisited = new Table();

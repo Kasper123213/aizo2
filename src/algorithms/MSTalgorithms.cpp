@@ -4,7 +4,7 @@
 MSTalgorithms::MSTalgorithms(Graph* graph) {
     this->graph = graph;
     mstWeight = 0;
-    makeList();
+    makeMST();
     sets = new Table();
 }
 
@@ -59,10 +59,11 @@ void MSTalgorithms::clearMST() {
         delete[] mst[vertex];
     }
     delete[] mst;
+    mstWeight = 0;
 }
 
 
-void MSTalgorithms::makeList() {
+void MSTalgorithms::makeMST() {
     mst = new Table**[graph->vertices];
     for(int vertex = 0; vertex < graph->vertices; vertex++){
         mst[vertex] = new Table*[2];
@@ -282,4 +283,9 @@ void MSTalgorithms::startKruskalWithList() {
         mstWeight+=minWeight;
         neededEdges--;
     }
+}
+
+void MSTalgorithms::update() {
+//    clearMST();
+    makeMST();
 }

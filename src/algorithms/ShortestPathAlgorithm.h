@@ -26,6 +26,7 @@ public:
     void startBellmanFordWithList();
 
     void showSolution();
+    void update();
 };
 
 

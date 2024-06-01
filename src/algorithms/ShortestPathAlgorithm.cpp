@@ -265,3 +265,15 @@ void ShortestPathAlgorithm::showSolution() {
 
     delete solution;
 }
+
+void ShortestPathAlgorithm::update() {
+    delete paths;
+    delete weights;
+    paths = new Table();
+    paths->setSize(graph->vertices);
+    paths->setAllValues(-1);
+
+    weights = new Table();
+    weights->setSize(graph->vertices);
+    weights->setAllValues(-1);
+}
