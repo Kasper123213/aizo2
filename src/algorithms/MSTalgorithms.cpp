@@ -289,3 +289,8 @@ void MSTalgorithms::update() {
 //    clearMST();
     makeMST();
 }
+
+void MSTalgorithms::clearSets() {
+    delete sets;
+    sets = new Table();
+}

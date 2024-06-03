@@ -16,7 +16,7 @@ private:
     Table* sets;
 
     void addToMST(int from, int to, int weight);
-    void clearMST();
+
     void makeMST();
     int findGroup(int vertex);
 public:
@@ -34,6 +34,10 @@ public:
 
 
     int mstWeight;
+
+    void clearMST();
+
+    void clearSets();
 };
 
 #endif //AIZO2_MSTALGORITHMS_H

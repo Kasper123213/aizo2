@@ -20,6 +20,7 @@ Table::~Table() {   //zwalnianie pamięci po tablicy
 void Table::deleteTable() {
     delete[]head;
     head = nullptr;
+    size = 0;
 
 }
 
