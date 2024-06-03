@@ -14,10 +14,11 @@ private:
     Table* paths;
     Table* weights;
 
-    int start, stop;
 public:
     ShortestPathAlgorithm(Graph *graph, int start, int stop);
     ~ShortestPathAlgorithm();
+
+    int start, stop;
 
     void startDijkstraWithMatrix();
     void startDijkstraWithList();

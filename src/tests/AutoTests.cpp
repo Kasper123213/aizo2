@@ -202,9 +202,10 @@ AutoTests::AutoTests(){//todo do tworzenia grafu dodac mozliowsc zwiekszenia ilo
         cout<<"\t"<<densities[densityID]<<endl;
         for(int size=400; size<=1000; size+=100){
             cout<<"\t\t"<<size<<endl;
+            graph->randomGraph(size, densities[densityID]);
             for(int i=0; i<50; i++) {
                 cout<<"\t\t\t"<<i<<endl;
-                graph->randomGraph(size, densities[densityID]);
+                shortestPathAlgorithm->start = i+1;
                 shortestPathAlgorithm->update();
                 time->start();
                 shortestPathAlgorithm->startDijkstraWithMatrix();
@@ -234,10 +235,11 @@ AutoTests::AutoTests(){//todo do tworzenia grafu dodac mozliowsc zwiekszenia ilo
         cout<<"\t"<<densities[densityID]<<endl;
         for(int size=400; size<=1000; size+=100){
             cout<<"\t\t"<<size<<endl;
+            graph->randomGraph(size, densities[densityID]);
             for(int i=0; i<50; i++) {
                 cout<<"\t\t\t"<<i<<endl;
-                graph->randomGraph(size, densities[densityID]);
                 shortestPathAlgorithm->update();
+                shortestPathAlgorithm->start = i+1;
                 time->start();
                 shortestPathAlgorithm->startDijkstraWithList();
                 algorithmTime = time->getTimeMiliseconds();
@@ -264,9 +266,10 @@ AutoTests::AutoTests(){//todo do tworzenia grafu dodac mozliowsc zwiekszenia ilo
         cout<<"\t"<<densities[densityID]<<endl;
         for(int size=400; size<=1000; size+=100){
             cout<<"\t\t"<<size<<endl;
+            graph->randomGraph(size, densities[densityID]);
             for(int i=0; i<50; i++) {
                 cout<<"\t\t\t"<<i<<endl;
-                graph->randomGraph(size, densities[densityID]);
+                shortestPathAlgorithm->start = i+1;
                 shortestPathAlgorithm->update();
                 time->start();
                 shortestPathAlgorithm->startBellmanFordWithMatrix();
@@ -293,9 +296,10 @@ AutoTests::AutoTests(){//todo do tworzenia grafu dodac mozliowsc zwiekszenia ilo
         cout<<"\t"<<densities[densityID]<<endl;
         for(int size=400; size<=1000; size+=100){
             cout<<"\t\t"<<size<<endl;
+            graph->randomGraph(size, densities[densityID]);
             for(int i=0; i<50; i++) {
                 cout<<"\t\t\t"<<i<<endl;
-                graph->randomGraph(size, densities[densityID]);
+                shortestPathAlgorithm->start = i+1;
                 shortestPathAlgorithm->update();
                 time->start();
                 shortestPathAlgorithm->startBellmanFordWithList();
@@ -310,7 +314,7 @@ AutoTests::AutoTests(){//todo do tworzenia grafu dodac mozliowsc zwiekszenia ilo
     file.close();
     cout<<"Koniec algorytmu bellmanford na listą"<<endl;
 
-
+    delete shortestPathAlgorithm;
 
     delete graph;
 delete time;
