@@ -90,7 +90,7 @@ ManualTests::ManualTests(){
                         cout<<"Błędny wybór"<<endl<<endl;
                         return;
                 }
-                graph->randomGraph(vertices, density);
+                graph->randomGraph(vertices, density, 99);
 
 
                 break;
@@ -111,8 +111,8 @@ ManualTests::ManualTests(){
                         mstAlgorithms->startPrimWithList();
                         cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }
-//                    cout<<"Minimalne drzewo spinające:"<<endl; todo
-//                    mstAlgorithms->printMST();
+                    cout<<"Minimalne drzewo spinające:"<<endl;
+                    mstAlgorithms->printMST();
                     cout<<"koszt: "<<mstAlgorithms->mstWeight<<endl<<endl<<endl;
                     delete mstAlgorithms;
                 }else{
@@ -149,9 +149,9 @@ ManualTests::ManualTests(){
                         mstAlgorithms->startKruskalWithList();
                         cout<<"Czas wykonania algorytmu: "<<time->getTimeMiliseconds()<<"ms"<<endl;
                     }
-//                    cout<<"Minimalne drzewo spinające:"<<endl; todo
-//                    mstAlgorithms->printMST();
-//                    cout<<"koszt: "<<mstAlgorithms->mstWeight<<endl<<endl<<endl;
+                    cout<<"Minimalne drzewo spinające:"<<endl;
+                    mstAlgorithms->printMST();
+                    cout<<"koszt: "<<mstAlgorithms->mstWeight<<endl<<endl<<endl;
                     delete mstAlgorithms;
                 }else{
                     int start, stop;
@@ -230,10 +230,8 @@ ManualTests::Representation ManualTests::choseRepresentation() {
 void ManualTests::readFromFile() {
     string path;
     cout<<"Podaj ścieżkę"<<endl<<">>";
-//    cin>>path; //todo odkomentowac
+    cin>>path;
     cout<<endl<<endl;
-
-    path = "C:\\Users\\radom\\OneDrive\\Pulpit\\aizo\\aizo2\\files\\opisGrafNieskierowany.txt";
 
     graph->readGraph(path);
 

@@ -7,7 +7,6 @@
 
 using namespace std;
 class AutoTests {
-//todo autotests
 public:
     AutoTests();
     ~AutoTests();

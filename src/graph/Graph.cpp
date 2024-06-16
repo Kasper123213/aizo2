@@ -127,7 +127,7 @@ void Graph::makeList() {
     }
 }
 
-void Graph::printMatrix() {//todo popracowac nad wyswietlaniem macierzy
+void Graph::printMatrix() {
     int value;
     int maxLen;
     string tekstValue;
@@ -173,8 +173,8 @@ void Graph::printList() {
     }
 }
 
-void Graph::randomGraph(int vertices, int density) {//todo ulepszyc generowanie na przyklad losowanie  krawedzi z puli
-    clearRepresentations();//todo krawedzie w dwie strony powinny miec rozne wagi
+void Graph::randomGraph(int vertices, int density, int maxWeight) {
+    clearRepresentations();
 
     this->vertices = vertices;
 
@@ -202,13 +202,13 @@ void Graph::randomGraph(int vertices, int density) {//todo ulepszyc generowanie 
 
         if(from == to)continue;
 
-        weight = rand() % (99)+1;
+        weight = rand() % (maxWeight)+1;
 
         vertex = unvisited->get(to);
         addEdge(visited->get(from), vertex, weight, edgeId);
         edgeId++;
         if(type == 'D'){//podwojenie drzewa aby zapewnic sciezki miedzy dwoma dowolnymi wierzcholkami
-            weight = rand() % (99)+1;
+            weight = rand() % (maxWeight)+1;
             addEdge(vertex, visited->get(from), weight, edgeId);
             edgeId++;
         }
@@ -217,14 +217,13 @@ void Graph::randomGraph(int vertices, int density) {//todo ulepszyc generowanie 
         unvisited->remove(to);
     }
 
-    int vertexFrom, vertexTo;
     //dodawanie reszty krawędzi
     while(edgeId<edges){
         from = rand() % (visited->getSize());
         to = rand() % (visited->getSize());
 
         if(from != to and list[from][0]->find(to) == -1) {
-            weight = rand() % (99) + 1;//todo zmienic maxa
+            weight = rand() % (maxWeight) + 1;
             addEdge(from, to, weight, edgeId);
             edgeId++;
         }

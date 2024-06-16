@@ -33,7 +33,7 @@ public:
     void printMatrix();
     void printList();
 
-    void randomGraph(int vertices, int density);
+    void randomGraph(int vertices, int density, int maxWeight);
 
     void saveGraph();
     void setType(char type);
